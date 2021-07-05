@@ -63,6 +63,7 @@
         "valid-typeof": ["error", { "requireStringLiterals": true }],
         "no-delete-var": "warn",
         "no-label-var": "error",
+        "no-underscore-dangle": "off",
         "no-shadow": "off",
         "no-shadow-restricted-names": "error",
         "no-undef": "error",
