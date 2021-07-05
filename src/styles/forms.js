@@ -53,9 +53,9 @@ const useStyles = makeStyles((theme) => ({
     lockIcon: {
         color: "#92532F",
     },
-    addressList:{
-        display:"flex"
-    }
+    addressList: {
+        display: "flex",
+    },
 }));
 
 export default useStyles;

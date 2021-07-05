@@ -15,7 +15,7 @@ import { MailOutline as MailOutlineIcon, Lock as LockIcon } from "@material-ui/i
 import { Alert } from "@material-ui/lab";
 import { makeStyles } from "@material-ui/core/styles";
 
-import { useLogin } from "../hooks";
+import useLogin from "../hooks/useLogin";
 import googleIcon from "../assets/google.png";
 
 const useStyles = makeStyles((theme) => ({

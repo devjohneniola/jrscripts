@@ -49,7 +49,8 @@ const Http = () => {
         if (body) reqOptions.body = body;
         if (headers) reqOptions.headers = headers;
 
-        if (apiOrigin && !/^(https?:)?\/\//i.test(url)) url = apiOrigin + (url.charAt(0) === "/" ? "" : "/") + url;
+        if (apiOrigin && !/^(https?:)?\/\//i.test(url))
+            url = apiOrigin + (url.charAt(0) === "/" ? "" : "/") + url;
 
         const store = (foreverCache ? "local" : "session") + "Storage";
 
@@ -60,6 +61,11 @@ const Http = () => {
 
         const isValidErrorCallback = typeof errorCallback === "function";
         const isValidSuccessCallback = typeof successCallback === "function";
+
+        const reportError = (err, noTalk) => {
+            if (isValidErrorCallback) errorCallback(err);
+            if (!noTalk && debug) console.error(err);
+        };
 
         const fetchNow = ({ json: cacheJson, status: cacheStatus }) =>
             cacheJson && cacheStatus
@@ -79,8 +85,12 @@ const Http = () => {
                               resp[responseType === "text" ? "text" : "json"]()
                                   .then((json) => {
                                       saveToStore({ json, status });
-                                      if (isValidSuccessCallback) successCallback(json, status, security, insecure);
-                                      else if (debug) console.error("Success callback passed was not a function");
+                                      if (isValidSuccessCallback)
+                                          successCallback(json, status, security, insecure);
+                                      else if (debug)
+                                          console.error(
+                                              "Success callback passed was not a function",
+                                          );
                                   })
                                   .catch((err) => {
                                       if (status === 204) {
@@ -100,11 +110,6 @@ const Http = () => {
                       })
                       .catch((err) => reportError(err));
 
-        var reportError = (err, noTalk) => {
-            if (isValidErrorCallback) errorCallback(err);
-            if (!noTalk && debug) console.error(err);
-        };
-
         if (!window || (!foreverCache && !sessionCache) || !(store in window)) return fetchNow({});
         try {
             return fetchNow(JSON.parse(window[store].getItem(url)) || {});
@@ -119,8 +124,8 @@ const Http = () => {
             credentials: "include",
             onReady(resp) {
                 const { status } = resp;
-                let security = {},
-                    insecure = false;
+                let security = {};
+                let insecure = false;
                 if (status === 401) {
                     signOut();
                     security = { ...security, loggedOut: true };
@@ -135,7 +140,9 @@ const Http = () => {
     const abort = () => {
         try {
             controller.abort();
-        } catch (err) {}
+        } catch (err) {
+            /* sjd */
+        }
     };
 
     return { makeReq, secureRequest, abort };
@@ -148,6 +155,8 @@ export const Https = () => {
 
 export const tryAgainMsg = () =>
     "Please try again in a few minutes time" +
-    (window && window.navigator && window.navigator.onLine === false ? ". Be sure to have internet connection" : "");
+    (window && window.navigator && window.navigator.onLine === false
+        ? ". Be sure to have internet connection"
+        : "");
 
 export default Http;

@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
+import { BrowserRouter } from "react-router-dom";
 import { ThemeProvider } from "@material-ui/styles";
 import { createMuiTheme } from "@material-ui/core/styles";
 import { blue } from "@material-ui/core/colors";
@@ -26,10 +27,8 @@ const App = () => {
 
     useEffect(() => {
         if (isSignedOut !== true) return;
-        setIsBusy(true);
         window.localStorage.setItem(userKey, "");
         setTimeout(() => {
-            setIsBusy(false);
             window.location.reload();
         }, 1500);
     }, [isSignedOut]);
@@ -37,7 +36,9 @@ const App = () => {
     return (
         <ThemeProvider {...{ theme }}>
             <GlobalContext.Provider value={{ isSignedOut, toggleIsSignedOut }}>
-                <Routes />
+                <BrowserRouter>
+                    <Routes />
+                </BrowserRouter>
             </GlobalContext.Provider>
         </ThemeProvider>
     );

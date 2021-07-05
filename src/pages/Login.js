@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { CssBaseline, Paper, Typography, Grid } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
-import { Login } from "../forms";
+import Login from "../forms/Login";
 
 import formImg from "../assets/leaves.png";
 

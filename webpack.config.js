@@ -5,7 +5,7 @@ const CompressionPlugin = require("compression-webpack-plugin");
 const CopyPlugin = require("copy-webpack-plugin");
 const Dotenv = require("dotenv-webpack");
 const HtmlWebPackPlugin = require("html-webpack-plugin");
-const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
+const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
 const webpack = require("webpack");
 require("dotenv/config");
 
@@ -48,7 +48,7 @@ if (sslCertPath && sslKeyPath) {
     devServer.https = true;
 }
 
-let config = {
+const config = {
     entry: path.resolve(__dirname, "./src/index.js"),
     output: {
         path: path.resolve(__dirname, "./dist"),
@@ -84,7 +84,7 @@ let config = {
                 test: /\.svg$/i,
                 type: "asset/inline",
                 generator: {
-                    dataUrl: (content) => {
+                    dataUrl(content) {
                         content = content.toString();
                         return svgToMiniDataURI(content);
                     },
@@ -153,7 +153,7 @@ module.exports = (env, argv) => {
         config.performance = {
             hints: "warning",
             // Calculates sizes of gziped bundles.
-            assetFilter: function (assetFilename) {
+            assetFilter(assetFilename) {
                 return assetFilename.endsWith(".js.gz");
             },
         };
