@@ -15,9 +15,7 @@ const host = process.env.HOST;
 const port = process.env.PORT;
 
 const useHttps = !!process.env.USE_HTTPS;
-const useHotReload = !!process.env.USE_HOT_RELOAD;
-const useHotReloadOnly = !!process.env.USE_HOT_RELOAD_ONLY;
-const noLiveReload = !!process.env.NO_LIVE_RELOAD;
+const useLiveReload = !!process.env.USE_LIVE_RELOAD;
 
 const sslCertPath = process.env.SSL_CERT_PATH;
 const sslKeyPath = process.env.SSL_KEY_PATH;
@@ -25,18 +23,17 @@ const sslCaPath = process.env.SSL_CA_PATH;
 
 const devServer = {
     compress: true,
-    contentBase: path.resolve(__dirname, "./public"),
     historyApiFallback: true,
-    index: "index.html",
     open: true,
 };
 
 if (host) devServer.host = host;
 if (port) devServer.port = port;
 
-if (useHotReload) devServer.hot = true;
-if (useHotReloadOnly) devServer.hotOnly = true;
-if (noLiveReload) devServer.liveReload = false;
+if (useLiveReload) {
+    devServer.liveReload = true;
+    devServer.hot = false;
+}
 
 if (sslCertPath && sslKeyPath) {
     devServer.https = {
