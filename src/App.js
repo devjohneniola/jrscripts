@@ -1,6 +1,5 @@
 import { hot } from "react-hot-loader/root";
 import React, { useState, useEffect, useCallback } from "react";
-import { BrowserRouter } from "react-router-dom";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { blue, red, green } from "@mui/material/colors";
 // import { useMediaQuery } from "@mui/material";
@@ -60,9 +59,7 @@ const App = () => {
     return (
         <ThemeProvider {...{ theme }}>
             <GlobalContext.Provider value={{ userDetails, setUserDetails, updateUserDetails }}>
-                <BrowserRouter>
-                    <Routes />
-                </BrowserRouter>
+                <Routes />
             </GlobalContext.Provider>
         </ThemeProvider>
     );
