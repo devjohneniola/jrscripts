@@ -13,7 +13,8 @@
     "homepage": ".",
     "scripts": {
         "start": "webpack serve --mode=development",
-        "build": "NODE_ENV=production webpack --mode=production",
+        "build": "set NODE_ENV=production && webpack --mode=production",
+        "build_unix": "export NODE_ENV=production && webpack --mode=production",
         "serve": "serve -s dist -l 8000"
     },
     "author": "John Eniola",
