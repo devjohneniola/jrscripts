@@ -3,6 +3,24 @@
     "plugins": [
         "@babel/plugin-proposal-export-default-from",
         "@babel/plugin-proposal-object-rest-spread",
-        "react-hot-loader/babel"
+        "react-hot-loader/babel",
+        [
+            "babel-plugin-import",
+            {
+                "libraryName": "@mui/material",
+                "libraryDirectory": "",
+                "camel2DashComponentName": false
+            },
+            "core"
+        ],
+        [
+            "babel-plugin-import",
+            {
+                "libraryName": "@mui/icons-material",
+                "libraryDirectory": "",
+                "camel2DashComponentName": false
+            },
+            "icons"
+        ]
     ]
 }

@@ -10,10 +10,10 @@ import {
     InputAdornment,
     Avatar,
     CircularProgress,
-} from "@material-ui/core";
-import { MailOutline as MailOutlineIcon, Lock as LockIcon } from "@material-ui/icons";
-import { Alert } from "@material-ui/lab";
-import { makeStyles } from "@material-ui/core/styles";
+} from "@mui/material";
+import { MailOutline as MailOutlineIcon, Lock as LockIcon } from "@mui/icons-material";
+import { Alert } from "@mui/lab";
+import { makeStyles } from "@mui/styles";
 
 import useLogin from "../hooks/useLogin";
 import googleIcon from "../assets/google.png";
@@ -108,7 +108,7 @@ const LoginForm = () => {
             <Grid
                 container
                 alignItems="center"
-                style={{ display: "flex", justifyContent: "space-between" }}
+                sx={{ display: "flex", justifyContent: "space-between" }}
             >
                 <Grid item>
                     <FormControlLabel
@@ -131,6 +131,7 @@ const LoginForm = () => {
                     </Typography>
                 </Grid>
             </Grid>
+
             <Button
                 type="submit"
                 fullWidth
@@ -140,6 +141,7 @@ const LoginForm = () => {
             >
                 Sign In
             </Button>
+
             <Grid container justify="center">
                 <Grid item>
                     <Typography variant="body1" color="initial">
@@ -150,16 +152,15 @@ const LoginForm = () => {
                     </Typography>
                 </Grid>
             </Grid>
-            <Grid container style={{ marginTop: "50px" }}>
-                <Button
-                    variant="outlined"
-                    color="default"
-                    fullWidth
-                    startIcon={<Avatar src={googleIcon} />}
-                >
-                    Sign in with Google
-                </Button>
-            </Grid>
+
+            <Button
+                variant="outlined"
+                color="default"
+                fullWidth
+                startIcon={<Avatar src={googleIcon} />}
+            >
+                Sign in with Google
+            </Button>
         </form>
     );
 };

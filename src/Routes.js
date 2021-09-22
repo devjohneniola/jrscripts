@@ -5,7 +5,7 @@ import { Switch, Route, BrowserRouter /* Redirect */ } from "react-router-dom";
 
 import ScrollToTop from "./components/ScrollToTop";
 
-import Home from "./pages/index";
+import Home from "./pages/Home";
 import Login from "./pages/Login";
 import NotFound from "./pages/NotFound";
 

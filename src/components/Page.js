@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import PropTypes from "prop-types";
-import { Container, Paper } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
+import { Container, Paper } from "@mui/material";
+import { makeStyles } from "@mui/styles";
 
 import { appName } from "../app-details";
 

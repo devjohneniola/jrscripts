@@ -5,7 +5,6 @@ const CompressionPlugin = require("compression-webpack-plugin");
 const CopyPlugin = require("copy-webpack-plugin");
 const Dotenv = require("dotenv-webpack");
 const HtmlWebPackPlugin = require("html-webpack-plugin");
-const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
 const webpack = require("webpack");
 require("dotenv/config");
 
@@ -13,8 +12,11 @@ const svgToMiniDataURI = require("mini-svg-data-uri");
 
 const host = process.env.HOST;
 const port = process.env.PORT;
+const devServerCompress = !!process.env.DEV_SERVER_COMPRESS;
 
 const useHttps = !!process.env.USE_HTTPS;
+const noHotReload = !!process.env.NO_HOT_RELOAD;
+const hotReloadOnly = !!process.env.HOT_RELOAD_ONLY;
 const useLiveReload = !!process.env.USE_LIVE_RELOAD;
 
 const sslCertPath = process.env.SSL_CERT_PATH;
@@ -22,17 +24,27 @@ const sslKeyPath = process.env.SSL_KEY_PATH;
 const sslCaPath = process.env.SSL_CA_PATH;
 
 const devServer = {
-    compress: true,
+    compress: devServerCompress,
+    client: { logging: "error", overlay: true, progress: true },
     historyApiFallback: true,
     open: true,
+    static: {
+        directory: path.join(__dirname, "public"),
+        publicPath: "/",
+        serveIndex: true,
+        watch: true,
+    },
 };
 
 if (host) devServer.host = host;
 if (port) devServer.port = port;
 
+if (noHotReload) devServer.hot = false;
+if (hotReloadOnly) devServer.hot = "only";
 if (useLiveReload) {
-    devServer.liveReload = true;
     devServer.hot = false;
+    devServer.liveReload = true;
+    devServer.watchFiles = ["src/**/*", "public/**/*"];
 }
 
 if (sslCertPath && sslKeyPath) {
@@ -46,7 +58,7 @@ if (sslCertPath && sslKeyPath) {
 }
 
 const config = {
-    entry: path.resolve(__dirname, "./src/index.js"),
+    entry: ["react-hot-loader/patch", path.resolve(__dirname, "./src/index.js")],
     output: {
         path: path.resolve(__dirname, "./dist"),
         publicPath: "/",
@@ -56,6 +68,7 @@ const config = {
         modules: [path.join(__dirname, "src"), "node_modules"],
         alias: {
             react: path.join(__dirname, "node_modules", "react"),
+            "react-dom": "@hot-loader/react-dom",
         },
     },
     module: {
@@ -111,12 +124,14 @@ const config = {
             title: process.env.JRA_APP_NAME || "JRA",
             xhtml: true,
         }),
+        new webpack.HotModuleReplacementPlugin(),
     ],
 };
 
 module.exports = (env, argv) => {
     config.mode = argv.mode;
     if (argv.mode === "development") {
+        config.target = "web";
         config.devtool = "inline-source-map";
         config.plugins.push(new webpack.HotModuleReplacementPlugin());
         config.devServer = devServer;
@@ -124,6 +139,7 @@ module.exports = (env, argv) => {
 
     if (argv.mode === "production") {
         // config.entry = ["./src"];
+        config.target = "browserslist";
         config.devtool = "source-map";
         config.output.filename = "[name].[chunkhash].bundle.js";
         config.output.chunkFilename = "[name].[chunkhash].bundle.js";
@@ -137,9 +153,6 @@ module.exports = (env, argv) => {
             },
         };
         config.plugins.push(
-            new BundleAnalyzerPlugin({
-                analyzerMode: "static",
-            }),
             new CompressionPlugin({
                 test: /\.js(\?.*)?$/i,
             }),
