@@ -1,12 +1,12 @@
 const fs = require("fs");
-const path = require("path");
+const { join, resolve } = require("path");
 
 const CompressionPlugin = require("compression-webpack-plugin");
 const CopyPlugin = require("copy-webpack-plugin");
+require("dotenv/config");
 const Dotenv = require("dotenv-webpack");
 const HtmlWebPackPlugin = require("html-webpack-plugin");
 const webpack = require("webpack");
-require("dotenv/config");
 
 const svgToMiniDataURI = require("mini-svg-data-uri");
 
@@ -29,7 +29,7 @@ const devServer = {
     historyApiFallback: true,
     open: true,
     static: {
-        directory: path.join(__dirname, "public"),
+        directory: join(__dirname, "public"),
         publicPath: "/",
         serveIndex: true,
         watch: true,
@@ -58,16 +58,18 @@ if (sslCertPath && sslKeyPath) {
 }
 
 const config = {
-    entry: ["react-hot-loader/patch", path.resolve(__dirname, "./src/index.js")],
+    entry: ["react-hot-loader/patch", resolve(__dirname, "./src/index.js")],
+    stats: { errorDetails: true },
     output: {
-        path: path.resolve(__dirname, "./dist"),
+        clean: true,
+        path: resolve(__dirname, "./dist"),
         publicPath: "/",
         filename: "bundle.js",
     },
     resolve: {
-        modules: [path.join(__dirname, "src"), "node_modules"],
+        modules: [join(__dirname, "src"), "node_modules"],
         alias: {
-            react: path.join(__dirname, "node_modules", "react"),
+            react: join(__dirname, "node_modules", "react"),
             "react-dom": "@hot-loader/react-dom",
         },
     },
@@ -76,6 +78,7 @@ const config = {
             {
                 test: /\.m?jsx?$/i,
                 exclude: /(node_modules|bower_components)/,
+                resolve: { fullySpecified: false },
                 use: {
                     loader: "babel-loader",
                     options: {
@@ -94,10 +97,7 @@ const config = {
                 test: /\.svg$/i,
                 type: "asset/inline",
                 generator: {
-                    dataUrl(content) {
-                        content = content.toString();
-                        return svgToMiniDataURI(content);
-                    },
+                    dataUrl: (content) => svgToMiniDataURI(content.toString()),
                 },
             },
             { test: /\.txt$/, type: "asset", parser: { dataUrlCondition: { maxSize: 4 * 1024 } } },
@@ -119,6 +119,7 @@ const config = {
         new HtmlWebPackPlugin({
             cache: true,
             favicon: "./favicon.ico",
+            minify: true,
             hash: true,
             template: "./public/index.html",
             title: process.env.JRA_APP_NAME || "JRA",
@@ -145,11 +146,16 @@ module.exports = (env, argv) => {
         config.output.chunkFilename = "[name].[chunkhash].bundle.js";
         config.optimization = {
             moduleIds: "deterministic",
-            runtimeChunk: {
-                name: "manifest",
-            },
+            runtimeChunk: "single",
             splitChunks: {
-                cacheGroups: {},
+                chunks: "all",
+                cacheGroups: {
+                    vendor: {
+                        test: /[\\/]node_modules[\\/]/,
+                        name: "vendors",
+                        chunks: "all",
+                    },
+                },
             },
         };
         config.plugins.push(
@@ -157,15 +163,18 @@ module.exports = (env, argv) => {
                 test: /\.js(\?.*)?$/i,
             }),
             new CopyPlugin({
-                patterns: [{ from: "./_redirects" }],
+                patterns: [
+                    {
+                        from: "public",
+                        to: ".",
+                        filter: (resourcePath) => !/index.html$/.test(resourcePath),
+                    },
+                ],
             }),
         );
         config.performance = {
             hints: "warning",
-            // Calculates sizes of gziped bundles.
-            assetFilter(assetFilename) {
-                return assetFilename.endsWith(".js.gz");
-            },
+            assetFilter: (assetFilename) => assetFilename.endsWith(".js.gz"),
         };
     }
 
