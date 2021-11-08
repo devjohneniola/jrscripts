@@ -59,7 +59,6 @@ if (sslCertPath && sslKeyPath) {
 
 const config = {
     entry: ["react-hot-loader/patch", resolve(__dirname, "./src/index.js")],
-    stats: { errorDetails: true },
     output: {
         clean: true,
         path: resolve(__dirname, "./dist"),
@@ -118,7 +117,7 @@ const config = {
         }),
         new HtmlWebPackPlugin({
             cache: true,
-            favicon: "./favicon.ico",
+            favicon: "./public/favicon.ico",
             minify: true,
             hash: true,
             template: "./public/index.html",
@@ -132,6 +131,7 @@ const config = {
 module.exports = (env, argv) => {
     config.mode = argv.mode;
     if (argv.mode === "development") {
+        config.stats = { errorDetails: true };
         config.target = "web";
         config.devtool = "inline-source-map";
         config.plugins.push(new webpack.HotModuleReplacementPlugin());
@@ -140,7 +140,7 @@ module.exports = (env, argv) => {
 
     if (argv.mode === "production") {
         // config.entry = ["./src"];
-        config.target = "browserslist:last 2 versions";
+        config.target = "browserslist";
         config.devtool = "source-map";
         config.output.filename = "[name].[chunkhash].bundle.js";
         config.output.chunkFilename = "[name].[chunkhash].bundle.js";

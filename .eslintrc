@@ -1,21 +1,27 @@
 {
     "env": {
         "browser": true,
-        "es6": true
-    },
-    "extends": ["plugin:react/recommended", "airbnb", "prettier"],
-    "globals": {
-        "Atomics": "readonly",
-        "SharedArrayBuffer": "readonly"
+        "node": true,
+        "es2021": true
     },
     "parser": "@babel/eslint-parser",
     "parserOptions": {
+        "allowImportExportEverywhere": true,
         "ecmaFeatures": {
-            "jsx": true
+            "jsx": true,
+            "experimentalObjectRestSpread": true
         },
-        "ecmaVersion": 2018,
+        "ecmaVersion": "latest",
         "sourceType": "module"
     },
+    "extends": [
+        "eslint:recommended",
+        "plugin:react/recommended",
+        "plugin:react-hooks/recommended",
+        "plugin:jsx-a11y/recommended",
+        "plugin:import/errors",
+        "plugin:import/warnings"
+    ],
     "plugins": ["react", "prettier", "react-hooks"],
     "rules": {
         "for-direction": "error",
@@ -242,5 +248,13 @@
         "react/jsx-props-no-spreading": ["off"],
         "react/no-array-index-key": ["off"],
         "react/forbid-prop-types": ["off"]
+    },
+    "settings": {
+        "linkComponents": [
+            "Hyperlink",
+            { "name": "Link", "linkAttribute": "to" }, // React Router DOM
+            { "name": "NavLink", "linkAttribute": "to" }, // React Router DOM
+            { "name": "Link", "linkAttribute": "href" } // Material UI
+        ]
     }
 }
