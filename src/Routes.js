@@ -24,19 +24,17 @@ import NotFound from "./pages/NotFound";
 // RouteWithAuth.propTypes = { noVerificationNeeded: PropTypes.bool };
 // RouteWithAuth.defaultProps = { noVerificationNeeded: false };
 
-const RoutesComp = () => {
-    return (
-        <BrowserRouter>
-            <ScrollToTop>
-                <Routes>
-                    <Route exact path="/" component={Home} />
-                    <Route exact path="/login" component={Login} />
-                    <Route component={NotFound} />
-                </Routes>
-            </ScrollToTop>
-        </BrowserRouter>
-    );
-};
+const RoutesComp = () => (
+    <BrowserRouter>
+        <ScrollToTop>
+            <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="*" element={<NotFound />} />
+            </Routes>
+        </ScrollToTop>
+    </BrowserRouter>
+);
 
 RoutesComp.displayName = "Routes Comp";
 
