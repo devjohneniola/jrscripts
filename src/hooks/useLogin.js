@@ -1,10 +1,10 @@
 import { useState, useCallback } from "react";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import { Http, tryAgainMsg } from "../helpers";
 
 const useLogin = () => {
-    const history = useHistory();
+    const navigate = useNavigate();
 
     const [isLoading, setIsLoading] = useState(false);
     const [errMsg, setErrMsg] = useState("");
@@ -40,7 +40,7 @@ const useLogin = () => {
 
                 setSucMsg("Login successful!");
                 const timer = setTimeout(() => {
-                    history.push("/");
+                    navigate("/");
                     clearTimeout(timer);
                 }, 1500);
             },

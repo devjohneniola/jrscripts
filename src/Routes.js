@@ -1,6 +1,6 @@
 import React /*, { useContext }*/ from "react";
 // import PropTypes from "prop-types";
-import { Switch, Route, BrowserRouter /* Redirect */ } from "react-router-dom";
+import { Routes, Route, BrowserRouter /* Redirect */ } from "react-router-dom";
 
 // import GlobalContext from "./contexts";
 
@@ -24,20 +24,20 @@ import NotFound from "./pages/NotFound";
 // RouteWithAuth.propTypes = { noVerificationNeeded: PropTypes.bool };
 // RouteWithAuth.defaultProps = { noVerificationNeeded: false };
 
-const Routes = () => {
+const RoutesComp = () => {
     return (
         <BrowserRouter>
             <ScrollToTop>
-                <Switch>
+                <Routes>
                     <Route exact path="/" component={Home} />
                     <Route exact path="/login" component={Login} />
                     <Route component={NotFound} />
-                </Switch>
+                </Routes>
             </ScrollToTop>
         </BrowserRouter>
     );
 };
 
-Routes.displayName = "Routes";
+RoutesComp.displayName = "Routes Comp";
 
-export default Routes;
+export default RoutesComp;

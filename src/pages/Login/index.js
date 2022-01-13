@@ -41,8 +41,8 @@ const Login = () => {
 
     return (
         <React.Fragment>
-            <CssBaseline />
             <Header />
+            <CssBaseline />
 
             <Grid container component="main" className={classes.root}>
                 <Grid item xs={false} sm={4} md={7} className={classes.image} />

@@ -9,7 +9,7 @@ const ScrollToTop = ({ children }) => {
 };
 
 ScrollToTop.displayName = "Scroll To Top";
-ScrollToTop.propTypes = { ScrollToTop: PropTypes.any };
+ScrollToTop.propTypes = { children: PropTypes.any };
 ScrollToTop.defaultProps = { children: "" };
 
 export default ScrollToTop;

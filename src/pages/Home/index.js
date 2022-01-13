@@ -13,8 +13,8 @@ const Home = () => {
 
     return (
         <React.Fragment>
-            <CssBaseline />
             <Header />
+            <CssBaseline />
 
             <Container sx={{ padding: 3 }}>
                 <CssBaseline />

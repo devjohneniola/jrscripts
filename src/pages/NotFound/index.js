@@ -13,8 +13,8 @@ const NotFound = () => {
 
     return (
         <React.Fragment>
-            <CssBaseline />
             <Header />
+            <CssBaseline />
 
             <Container sx={{ padding: 3 }}>
                 <Typography align="center" variant="h4">

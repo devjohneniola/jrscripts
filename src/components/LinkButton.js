@@ -1,16 +1,16 @@
 import React, { useCallback } from "react";
 import PropTypes from "prop-types";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@mui/material";
 
 const LinkButton = ({ isExternal, isNewTab, href, ...props }) => {
-    const history = useHistory();
+    const navigate = useNavigate();
     const handleNavigate = useCallback(() => {
         if (isExternal)
             if (isNewTab) window.open(href);
             else window.location.href = href;
-        else history.push(href);
-    }, [isExternal, isNewTab, history, href]);
+        else navigate(href);
+    }, [isExternal, isNewTab, navigate, href]);
     return <Button onClick={handleNavigate} {...props} />;
 };
 
