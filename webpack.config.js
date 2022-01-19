@@ -64,6 +64,7 @@ const config = {
         path: resolve(__dirname, "./dist"),
         publicPath: "/",
         filename: "bundle.js",
+        // chunkFormat: "array-push",
     },
     resolve: {
         modules: [join(__dirname, "src"), "node_modules"],
@@ -140,7 +141,7 @@ module.exports = (env, argv) => {
 
     if (argv.mode === "production") {
         // config.entry = ["./src"];
-        config.target = "browserslist";
+        config.target = "web"; // "browserslist";
         config.devtool = "source-map";
         config.output.filename = "[name].[chunkhash].bundle.js";
         config.output.chunkFilename = "[name].[chunkhash].bundle.js";
